@@ -94,3 +94,22 @@ We need to add a line at the end of the file:
 `@bash /home/pi/barkometer.sh`
 
 This will invoke a new instance of BASH and have it execute our script. Because this is in the context of a user it means that the user has to be logged in so automatic login is a good idea. An important issue is that the user login can’t occur until Raspbian has completed starting all subsystems so we can be certain that, unless there’s a problem, the services we require such as a wireless connection will be established.
+
+## Setting up the recording device
+```
+sudo apt update
+sudo apt install cifs-utils
+
+sudo mkdir -p /mnt/networkdrive
+
+nano ~/.smbcredentials
+username=YOUR_SAMBA_USERNAME
+password=YOUR_SAMBA_PASSWORD
+
+chmod 600 ~/.smbcredentials
+
+sudo nano /etc/fstab
+//192.168.2.110/NetworkDrive /mnt/networkdrive cifs credentials=/home/pi/.smbcredentials,uid=pi,gid=pi,nofail,x-systemd.automount,_netdev 0 0
+
+sudo mount -a
+```
